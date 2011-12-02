@@ -9,6 +9,9 @@ GEM
     addressable (2.2.6)
     beefcake (0.3.2)
     builder (2.1.2)
+    curb (0.7.16)
+    daemons (1.1.4)
+    eventmachine (0.12.10)
     heroku (2.14.0)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
@@ -43,12 +46,17 @@ GEM
       tilt (~> 1.3.2)
     temple (0.3.4)
     term-ansicolor (1.0.7)
+    thin (1.3.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
     tilt (1.3.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  curb
   heroku
   rack
   redcarpet
@@ -56,3 +64,4 @@ DEPENDENCIES
   sass
   sinatra
   slim
+  thin
