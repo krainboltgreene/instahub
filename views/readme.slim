@@ -1,1 +1,8 @@
+.travis_status
+  - if @status == 0 || @status == "stable"
+    section.alert-message.success
+      header
+        h1 Travis Status: Stable!
+      p This library is tested with Travis, and as of #{Time.parse(@travis_api["last_build_started_at"]).ago_in_words} passed all tests.
+
 == erb @body

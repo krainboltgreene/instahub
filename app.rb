@@ -7,9 +7,13 @@ get '/' do
 end
 
 get '/hub/:user/:repo?' do |user, repo|
-  base = "https://github.com/"
-  url = base + File.join(user, repo)
-  page = Curl::Easy.perform(url).body_str
-  @body = Nokogiri::HTML(page).css('#readme .wikistyle').inner_html
+  github = "https://github.com/"
+  travis = "http://travis-ci.org/"
+  slug = File.join(user, repo)
+  page = Nokogiri::HTML(Curl::Easy.perform(github + slug).body_str)
+  @travis_api = JSON.parse(Curl::Easy.perform(travis + slug + '.json').body_str)
+  @status = @travis_api["last_build_status"]
+	p @travis_api
+  @body = page.css('#readme .wikistyle').inner_html
   slim :readme
 end

@@ -1,5 +1,6 @@
 source :rubygems
 
+gem 'json'
 gem 'sinatra'
 gem 'rack'
 gem 'heroku'
@@ -7,6 +8,8 @@ gem 'thin'
 gem 'redcarpet'
 gem 'slim'
 gem 'sass'
-gem 'ripple'
+gem 'mongoid'
+gem 'bson_ext'
+gem 'time-lord'
 gem 'curb'
 gem 'nokogiri'
