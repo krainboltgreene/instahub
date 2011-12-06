@@ -3,10 +3,10 @@ html class="no-js" lang="en"
   head
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"
-    title "Hubber - Readme Easier"
+    title "Instahub - Instant Readme Viewing, But Better"
     meta name="description" content=""
-    meta name="author" content=""
-    meta name="keywords" content=""
+    meta name="author" content="Kurtis Rainbolt-Greene"
+    meta name="keywords" content="github, readme, typography"
     meta name="viewport" content="width=device-width,initial-scale=1"
     link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css"
     link href="/main.css" rel="stylesheet" type="text/css" media="screen"
@@ -14,22 +14,7 @@ html class="no-js" lang="en"
     header.topbar
     article.container-fluid
       .sidebar
-        .travis_status
-          - if @status == 0 || @status == "stable"
-            section.alert-message.success
-              header
-                h1 Stable
-              p This library is tested with Travis, and as of #{Time.parse(@travis_api["last_build_started_at"]).ago_in_words} passed all tests.
-          - elsif @status == 1 || @status == "failing"
-            section.alert-message.error
-              header
-                h1 Broken
-              p This library is tested with Travis, and as of #{Time.parse(@travis_api["last_build_started_at"]).ago_in_words} failed some tests.
-          - else
-            section.alert-message.warning
-              header
-                h1 Untested
-              p This library isn't tested with Travis, and so we have no idea if it's passing the tests made for it.
+        == slim :sidebar, locals: { travis: travis }
       .content
         == yield
     footer

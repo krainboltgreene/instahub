@@ -1,0 +1,5 @@
+- last_test = Time.parse(travis["last_build_started_at"]).ago_in_words
+section.alert-message.error
+  header
+    h1 Broken
+  p This repository is probably not passing tests on Travis-CI, and the last one was #{last_test}.

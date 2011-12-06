@@ -1,0 +1,5 @@
+- last_time = Time.parse(travis["last_build_started_at"]).ago_in_words
+section.alert-message.success
+  header
+    h1 Stable
+  p This repository is passing all tests on Travis-CI, and was last tested #{last_test}.

@@ -1,19 +1,39 @@
 require 'bundler/setup'
 Bundler.require
 
+GITHUB_URL = "https://github.com/"
+TRAVIS_URL = "http://travis-ci.org/"
 
 get '/' do
   slim :index
 end
 
-get '/hub/:user/:repo?' do |user, repo|
-  github = "https://github.com/"
-  travis = "http://travis-ci.org/"
-  slug = File.join(user, repo)
-  page = Nokogiri::HTML(Curl::Easy.perform(github + slug).body_str)
-  @travis_api = JSON.parse(Curl::Easy.perform(travis + slug + '.json').body_str)
-  @status = @travis_api["last_build_status"]
-	p @travis_api
-  @body = page.css('#readme .wikistyle').inner_html
-  slim :readme
+get '/i/:user/:repo?' do |user, repo|
+  readme = readmeify github_request using_slug_from user, repo
+  travis = apify travis_request using_slug_from user, repo
+  slim :readme, locals: { readme: readme, travis: travis }
+end
+
+def using_slug_from(user, repository)
+  user + '/' + repository
+end
+
+def github_request(slug)
+  Curl::Easy.perform(GITHUB_URL + slug).body_str
+end
+
+def travis_request(slug)
+  Curl::Easy.perform(TRAVIS_URL + slug + '.json').body_str
+end
+
+def readmeify(page)
+  Nokogiri::HTML(page).css('#readme .wikistyle').inner_html
+end 
+
+def apify(data)
+  JSON.parse data
+end
+
+def store(readme)
+
 end
