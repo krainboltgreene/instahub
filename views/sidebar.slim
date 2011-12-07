@@ -1,8 +1,13 @@
-- status = travis["last_build_status"]
-.travis_status
+- status = build["last_build_status"]
+.build_status
   - if status == 0 || status == "stable"
-    == slim :stable_build, locals: { travis: travis }
+    == slim :stable_build, locals: { build: build }
   - elsif status == 1 || status == "failing"
-    == slim :failed_build, locals: { travis: travis }
+    == slim :failed_build, locals: { build: build }
   - else
     == slim :not_found
+.license
+  - if license
+    == slim :known_license, locals: { license: license }
+  - else
+    == slim :unknown_license

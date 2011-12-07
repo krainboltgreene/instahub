@@ -14,7 +14,7 @@ html class="no-js" lang="en"
     header.topbar
     article.container-fluid
       .sidebar
-        == slim :sidebar, locals: { travis: travis }
+        == slim :sidebar, locals: { build: build, license: license }
       .content
         == yield
     footer

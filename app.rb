@@ -12,9 +12,9 @@ get '/i/:user/:repo?' do |user, repo|
   github = github_request using_slug_from user, repo
   travis = travis_request using_slug_from user, repo
   readme = readmeify github
-  license = licensify github
-  travis = apify travis
-  slim :readme, locals: { readme: readme, travis: travis }
+  license = licensify readme
+  build = apify travis
+  slim :readme, locals: { readme: readme, build: build, license: license }
 end
 
 def using_slug_from(user, repository)
@@ -26,19 +26,23 @@ def github_request(slug)
 end
 
 def travis_request(slug)
-  Curl::Easy.perform(TRAVIS_URL + slug + '.json').body_str
+  response = Curl::Easy.perform(TRAVIS_URL + slug + '.json').body_str
+  if response.include? "404"
+    response = "{}"
+  end
+  response
 end
 
 def readmeify(page)
   Nokogiri::HTML(page).css('#readme .wikistyle').inner_html
 end
 
-def licensify(page)
-  case Nokogiri::HTML(page).css('#readme .wikistyle').inner_html
-    when apache2pt0 then "Apache License, Version 2.0"
-    when apgl3pt0 then "AGPL-3.0"
-    when gpl3pt0 then "GPL-3.0"
-    when mit then ""
+def licensify(readme)
+  case readme
+    when false then "Apache"
+    when false then "AGPL"
+    when false then "GPL"
+    when /#{mit.join('|')}/mi then { name: "MIT" } 
   end
 end
 
@@ -50,18 +54,28 @@ def store(readme)
 
 end
 
-def agpl3pt0
-  /"This License" refers to version 3 of the GNU Affero General Public License/mi
-end
+# def agpl
+#   "GNU Affero General Public License"
+# end
 
-def apache2pt0
-  /Apache License Version 2\.0/mi
-end
+# def apache
+#   "Apache License"
+# end
 
-def gpl3pt0
-  /"This License" refers to version 3 of the GNU General Public License/mi
-end
+# def gpl
+#   "GNU General Public License"
+# end
+
+# def bsd
+#   "Redistribution and use in source and binary forms" +
+#   ", with or without modification, are permitted provided" +
+#   " that the following conditions are met"
+# end
 
 def mit
-  //mi
+  [
+    "Permission is hereby granted, free of charge",
+    "MIT License"
+  ]
 end
+
