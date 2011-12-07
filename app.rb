@@ -22,15 +22,13 @@ def using_slug_from(user, repository)
 end
 
 def github_request(slug)
-  Curl::Easy.perform(GITHUB_URL + slug).body_str
+  response = Curl::Easy.perform(GITHUB_URL + slug).body_str
+  if response.include? "404" then response = '<div id="readme"><div class="wikistyle"><p>Repository Not Found</p></div></div>' else response end
 end
 
 def travis_request(slug)
   response = Curl::Easy.perform(TRAVIS_URL + slug + '.json').body_str
-  if response.include? "404"
-    response = "{}"
-  end
-  response
+  if response.include? "404" then response = "{}" else response end
 end
 
 def readmeify(page)
@@ -39,10 +37,11 @@ end
 
 def licensify(readme)
   case readme
-    when false then "Apache"
-    when false then "AGPL"
-    when false then "GPL"
-    when /#{mit.join('|')}/mi then { name: "MIT" } 
+    when /#{apache.join('|')}/mi then { name: 'Apache', link: 'http://www.opensource.org/licenses/Apache-2.0' } 
+    when /#{agpl.join('|')}/mi then { name: 'AGPL', link: 'http://www.opensource.org/licenses/AGPL-3.0' } 
+    when /#{gpl.join('|')}/mi then { name: 'GPL', link: 'http://www.opensource.org/licenses/GPL-3.0' } 
+    when /#{mit.join('|')}/mi then { name: 'MIT', link: 'http://www.opensource.org/licenses/MIT' } 
+    when /#{bsd.join('|')}/mi then { name: 'BSD', link: 'http://www.opensource.org/licenses/BSD-3-Clause' } 
   end
 end
 
@@ -54,23 +53,30 @@ def store(readme)
 
 end
 
-# def agpl
-#   "GNU Affero General Public License"
-# end
+def agpl
+  [
+    "GNU Affero General Public License"
+  ]
+end
 
-# def apache
-#   "Apache License"
-# end
+def gpl
+  [
+    "GNU General Public License"
+  ]
+end
 
-# def gpl
-#   "GNU General Public License"
-# end
+def apache
+  [
+    "Apache License"
+  ]
+end
 
-# def bsd
-#   "Redistribution and use in source and binary forms" +
-#   ", with or without modification, are permitted provided" +
-#   " that the following conditions are met"
-# end
+def bsd
+  [
+    "Redistribution and use in source and binary forms",
+    "BSD License"
+  ]
+end
 
 def mit
   [
