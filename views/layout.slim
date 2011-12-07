@@ -3,23 +3,28 @@ html class="no-js" lang="en"
   head
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"
-    title "Instahub - Instant Readme Viewing, But Better"
-    meta name="description" content=""
+    title Instahub - Instant Readme Viewing, But Better
+    meta name="description" content="Instahub is a small app that makes Github readme files easier to read"
     meta name="author" content="Kurtis Rainbolt-Greene"
-    meta name="keywords" content="github, readme, typography"
+    meta name="keywords" content="github, readme, typography, test, license, travis"
     meta name="viewport" content="width=device-width,initial-scale=1"
     link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css"
-    link href="/main.css" rel="stylesheet" type="text/css" media="screen"
+    link href="/style/main.css" rel="stylesheet" type="text/css" media="screen"
   body
-    header.topbar
-
+    header
+      section.topbar.topbar-inner
+        .container
+          a class="brand" href="#" Instahub
+          ul.nav
+            li
+              a href="http://github.com/#{slug}" = slug
     article.container-fluid
       .sidebar
         == slim :sidebar, locals: { build: build, license: license }
       .content
         == yield
     footer
-
+      Copyright 2011 (C) - Kurtis Rainbolt-Greene, MIT License
     javascript:
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview'],['_trackPageLoadTime']];
       (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
