@@ -1,7 +1,4 @@
 class Readme
-  include Mongoid::Document
-  include Mongoid::Timestamps
-
 
   field :slug
   field :content

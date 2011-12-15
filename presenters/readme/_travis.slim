@@ -1,0 +1,13 @@
+- last_test = Time.parse(build["last_build_started_at"]).ago_in_words
+- if status == 0 or status == "stable"
+  section.alert-message.error
+    header
+      h1 Broken
+    p This repository is probably not passing tests on Travis-CI, and the last one was #{last_test}.
+- elsif status == 1 or status == "failed"
+  section.alert-message.error
+    header
+      h1 Broken
+    p This repository is probably not passing tests on Travis-CI, and the last one was #{last_test}.
+- else
+  section.alert-message.

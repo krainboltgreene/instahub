@@ -1,15 +1,28 @@
 source :rubygems
 
-gem 'json'
 gem 'sinatra'
+
+# Server gems
 gem 'rack'
-gem 'heroku'
 gem 'thin'
-gem 'redcarpet'
+gem 'heroku'
+gem 'shotgun'
+
+
+# Database gems
+gem 'ohm'
+
+
+# Rendering gems
 gem 'slim'
+gem 'redcarpet'
 gem 'sass'
-gem 'mongoid'
-gem 'bson_ext'
-gem 'time-lord'
+
+
+# API Gems
+gem 'yajl-ruby', require: 'yajl'
 gem 'curb'
-gem 'nokogiri'
+
+
+# Helper gems
+gem 'time-lord'
